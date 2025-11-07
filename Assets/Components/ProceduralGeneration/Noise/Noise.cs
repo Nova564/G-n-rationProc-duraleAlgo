@@ -25,6 +25,7 @@ public class NoiseGenerator : ProceduralGenerationMethod
         float[,] noiseData = new float[Grid.Width, Grid.Lenght];
 
         noise.SetFrequency(frequency);
+        noise.SetSeed(RandomService.Seed);
 
         for (int x = 0; x < Grid.Width; x++)
         {

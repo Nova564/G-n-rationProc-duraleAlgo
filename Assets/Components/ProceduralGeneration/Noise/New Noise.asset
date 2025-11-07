@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: New Noise
   m_EditorClassIdentifier: 
   _maxSteps: 1000
-  _scale: 0.05
-  _octaves: 4
-  _persistence: 0.5
-  _lacunarity: 2
-  _waterThreshold: 0.4
-  _rockThreshold: 0.7
+  highWater: -0.69
+  highSand: -0.34
+  highGrass: 0.65
+  highRock: 1
+  frequency: 0.044
