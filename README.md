@@ -338,7 +338,7 @@ protected override async UniTask ApplyGeneration(CancellationToken cancellationT
 }
 ```
 
-**Comptage des voisins (8 directions) :**
+**Comptage des voisins :**
 ```csharp
 int CountGrassNeighbors(Cell cell)
 {
@@ -429,8 +429,7 @@ protected override async UniTask ApplyGeneration(CancellationToken cancellationT
 
 #### Inconvénients
 - Pas de structures discrètes comme les bâtiments et les salles contrairement aux deux premiers algos
-- Ne garantit pas de caractéristiques spécifiques
-- Nécessite un ajustement fin des seuils
+- Nécessite pas mal d'ajustement pour avoir un résultat satisfaisant selon nos besoin
 - Peut créer des layouts non optimaux pour le gameplay
 
 
@@ -440,14 +439,14 @@ protected override async UniTask ApplyGeneration(CancellationToken cancellationT
 
 ## Créer Son Algorithme
 
-Le système est conçu pour être facilement extensible. Voici la structure de base :
+Le système est conçu pour être facilement extensible et utilisable voici comment :
 
 ```csharp
 using Components.ProceduralGeneration;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
-
+//Pour le scriptable object
 [CreateAssetMenu(menuName = "Procedural Generation Method/Mon Algorithme")]
 public class MonAlgorithme : ProceduralGenerationMethod
 {
@@ -456,19 +455,18 @@ public class MonAlgorithme : ProceduralGenerationMethod
     
     protected override async UniTask ApplyGeneration(CancellationToken cancellationToken)
     {
-        // 1. Parcourir la grille
+        // On parcourt la grille
         foreach (var cell in Grid.Cells)
         {
-            // Vérifier l'annulation régulièrement
             cancellationToken.ThrowIfCancellationRequested();
             
-            // 2. Logique de placement
+            //La logique de place dans le moteur on peut avoir selon l'algo un (CANPlaceRoom) mais remplaçable par vos propres méthodes
             if (/* condition */)
             {
                 AddTileToCell(cell, GRASS_TILE_NAME, true);
             }
             
-            // 3. Délai pour visualisation (optionnel)
+            // Délai pour la visualisation
             await UniTask.Delay(GridGenerator.StepDelay, cancellationToken: cancellationToken);
         }
     }
@@ -500,10 +498,10 @@ if (Grid.TryGetCellByCoordinates(x, y, out var cell)) { ... }
 
 ## Dépendances
 
-- **UniTask** : Gestion asynchrone performante
-- **FastNoiseLite** : Génération de bruit (inclus)
-- **Unity Editor** : Outils d'inspection personnalisés
+- **UniTask** : Gestion asynchrone garantissant de bien meilleurs performances
+- **FastNoiseLite** : Génération de bruit (documentation disponible)
+- **Unity Editor** : Outils d'inspector personnalisé pour facilité les différents tests
 
 ---
 
-**Système développé pour la génération procédurale de niveaux Unity**
+**Système pour la génération procédurale unity avec différents algo et un moteur modulaire**
